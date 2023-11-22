@@ -10,8 +10,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     subdomain: 'local',
   }, context);
 
-  console.log(context.req.cookies);
-
   return {
     props: {
       nhostSession,
