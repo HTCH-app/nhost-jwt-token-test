@@ -9,6 +9,8 @@ type Props = {
 }
 
 export default function App({ Component, pageProps }: AppProps<Props>) {
+
+  console.log('app, from ssr', pageProps.nhostSession);
   return (
     <NhostProvider nhost={nhost} initial={pageProps.nhostSession}>
       <NhostApolloProvider nhost={nhost}>

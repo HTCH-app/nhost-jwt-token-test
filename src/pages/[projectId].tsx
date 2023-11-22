@@ -1,16 +1,13 @@
 import { Allow } from "@/auth";
 import { GetServerSidePropsContext } from "next";
 import { useSignOut, getNhostSession, useUserData, useAuthenticationStatus, useUserDisplayName } from "@nhost/nextjs";
-import { useProjectsList } from "@/hooks/use-projects-list";
-import { useReceivedInvites } from "@/hooks/use-recieved-invites";
-import Link from "next/link";
+import { useRouter } from "next/router";
+import { useProjectsData } from "@/hooks/use-project-data";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const nhostSession = await getNhostSession({
     subdomain: 'local',
   }, context);
-
-  console.log(context.req.cookies);
 
   return {
     props: {
@@ -20,11 +17,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 
-function Home() {
+function Project() {
   const { signOut } = useSignOut();
-  const { data } = useProjectsList();
-  const { invites } = useReceivedInvites();
+  const router = useRouter();
   const userName = useUserDisplayName();
+  const { projectId } = router.query;
+  const { data: project } = useProjectsData(projectId as string);
 
   return (
     <div
@@ -38,29 +36,14 @@ function Home() {
           sign out</button>
       </div>
       <h2>
-        Projects
+        Project page
       </h2>
 
-      <ul>
-        {data?.projects?.map((project: any) => (
-          <li key={project.id}>
-            <Link href={`/${project.id}`}>
-              {project.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-
-      <h2>Invites</h2>
-      <ul>
-        {invites.map((invite: any) => (
-          <li key={invite.id}>
-            {invite.inviter_name} invites you to collaborate on: {invite.project_name}
-          </li>
-        ))}
-      </ul>
+      <div className="max-w-[400px]">
+        {JSON.stringify(project)}
+      </div>
     </div>
   )
 }
 
-export default Allow(Home, ['user', 'anonymous'])
+export default Allow(Project, ['user', 'anonymous'])

@@ -1,5 +1,5 @@
 import { ComponentType, FC } from 'react';
-import { useAuthenticationStatus, useUserIsAnonymous } from '@nhost/nextjs';
+import { useAuthenticationStatus, useUserData } from '@nhost/nextjs';
 import { AuthPage } from "@/auth/pages";
 
 type ROLE = 'anonymous' | 'user' | 'public';
@@ -13,8 +13,6 @@ export const Allow =
       const { isAuthenticated, isLoading, isError, error } =
         useAuthenticationStatus();
 
-      console.log({ isAuthenticated });
-
       if (isError) {
         return (
           <div className="p-6 lg:p-12">
@@ -25,7 +23,7 @@ export const Allow =
       }
 
       if (isLoading) {
-        return <div className="p-6 lg:p-12">Loading…</div>;
+        return <div className="p-6 lg:p-10">Loading…</div>;
       }
 
       const isPagePublic = allowedRoles.includes('public');
