@@ -1,5 +1,5 @@
-import { ComponentType, FC } from 'react';
-import { useAuthenticationStatus, useUserData } from '@nhost/nextjs';
+import { ComponentType } from 'react';
+import { useAuthenticationStatus } from '@nhost/nextjs';
 import { AuthPage } from "@/auth/pages";
 
 type ROLE = 'anonymous' | 'user' | 'public';
